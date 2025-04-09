@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerSimpleMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 400f;
 
     public Transform playerBody;
     public Transform playerCamera;
@@ -19,8 +19,8 @@ public class PlayerSimpleMovement : MonoBehaviour
     void Update()
     {
         // Movimento do mouse (câmera)
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * 400 * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * 400 * Time.deltaTime;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
