@@ -26,13 +26,16 @@ public class PlayerHealth : MonoBehaviour
 
     void AtualizarTexto()
     {
-        vidaTexto.text = "Vida: " + vida.ToString("0.0"); // mostra com 1 casa decimal
+        // Vê se a divisão não sobra então true, muda o numero string sem virgula, se é falso, então mostra com virgula
+        vidaTexto.text = "Vida: " + (vida % 1 == 0 ? vida.ToString("0") : vida.ToString("0.0"));
+
     }
 
     void Morrer()
     {
         Debug.Log("O jogador morreu!");
-        // Aqui você pode reiniciar a fase, mostrar uma tela, etc.
+        // Extra: Colocar tela de morte
+
     }
 
     public void AtivarDanoContinuo(float dano, float duracao)
