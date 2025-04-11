@@ -5,6 +5,9 @@ public class PlayerHealth : MonoBehaviour
 {
     public float vida = 3f;
     public Text vidaTexto;
+    public VidaUI vidaUI;
+
+
 
     private bool danoContinuoAtivo = false;
 
@@ -26,6 +29,10 @@ public class PlayerHealth : MonoBehaviour
 
     void AtualizarTexto()
     {
+
+        vidaUI.AtualizarVidaVisual(vida);
+
+
         // Vê se a divisão não sobra então true, muda o numero string sem virgula, se é falso, então mostra com virgula
         vidaTexto.text = "Vida: " + (vida % 1 == 0 ? vida.ToString("0") : vida.ToString("0.0"));
 
