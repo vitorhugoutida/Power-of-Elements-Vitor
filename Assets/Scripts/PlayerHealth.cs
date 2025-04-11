@@ -45,6 +45,8 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
+
+
     public void AtivarDanoContinuo(float dano, float duracao)
     {
         if (!danoContinuoAtivo)

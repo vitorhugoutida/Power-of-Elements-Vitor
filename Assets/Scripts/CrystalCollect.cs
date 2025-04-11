@@ -13,7 +13,7 @@ public class CrystalCollect : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Cristal coletado!");
+            Debug.Log("Cristal coletado");
 
             FindObjectOfType<CrystalCounter>().AdicionarCristal();
 
