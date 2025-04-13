@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CristalSprint : MonoBehaviour
+public class CristalPulo : MonoBehaviour
 {
     public UIAviso uiAviso;
 
@@ -11,11 +11,11 @@ public class CristalSprint : MonoBehaviour
             PlayerAvancedMovimento mov = other.GetComponent<PlayerAvancedMovimento>();
             if (mov != null)
             {
-                mov.AtivarSprint();
+                mov.AtivarPuloDuplo();
 
                 if (uiAviso != null)
                 {
-                    uiAviso.MostrarAviso("Sprint desbloqueado!", 3f);
+                    uiAviso.MostrarAviso("Pulo duplo desbloqueado!", 3f);
                 }
 
                 Destroy(gameObject);
