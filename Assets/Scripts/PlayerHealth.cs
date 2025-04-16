@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -7,9 +9,12 @@ public class PlayerHealth : MonoBehaviour
     public Text vidaTexto;
     public VidaUI vidaUI;
 
-
+    public bool isInvincible = false;
 
     private bool danoContinuoAtivo = false;
+
+    [Header("Nome da fase atual")]
+    public string nomeDaFaseParaGameOver;
 
     void Start()
     {
@@ -18,6 +23,12 @@ public class PlayerHealth : MonoBehaviour
 
     public void LevarDano(float dano)
     {
+        if (isInvincible)
+        {
+            //Debug.Log("Jogador está invencível. Não levou dano");
+            return;
+        }
+
         vida -= dano;
         AtualizarTexto();
 
@@ -26,6 +37,9 @@ public class PlayerHealth : MonoBehaviour
             Morrer();
         }
     }
+
+
+
 
     void AtualizarTexto()
     {
@@ -40,12 +54,11 @@ public class PlayerHealth : MonoBehaviour
 
     void Morrer()
     {
-        Debug.Log("O jogador morreu!");
-        // Extra: Colocar tela de morte
+        //Debug.Log("O jogador morreu!");
+        CenaAnterior.nomeDaCenaAnterior = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(nomeDaFaseParaGameOver);
 
     }
-
-
 
     public void AtivarDanoContinuo(float dano, float duracao)
     {
@@ -62,4 +75,21 @@ public class PlayerHealth : MonoBehaviour
         LevarDano(dano);
         danoContinuoAtivo = false;
     }
+
+    public void ActivateInvincibility(float duration)
+    {
+        StartCoroutine(InvincibilityCoroutine(duration));
+    }
+
+    IEnumerator InvincibilityCoroutine(float duration)
+    {
+        isInvincible = true;
+        Debug.Log("Jogador está invencível!");
+
+        yield return new WaitForSeconds(duration);
+
+        isInvincible = false;
+        Debug.Log("Jogador voltou ao normal!");
+    }
+
 }

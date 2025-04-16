@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class CrystalCollect : MonoBehaviour
 {
+    public UIAviso uiAviso;
+
     public float rotateSpeed = 100f;
 
     void Update()
@@ -13,7 +15,9 @@ public class CrystalCollect : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Cristal coletado");
+            //Debug.Log("Cristal coletado");
+
+            uiAviso.MostrarAviso("Cristal Coletado!", 3f);
 
             FindObjectOfType<CrystalCounter>().AdicionarCristal();
 

@@ -19,8 +19,6 @@ public class PlayerAvancedMovimento : MonoBehaviour
     private int pulosRestantes = 1;
     private bool estavaNoChaoAntes;
 
-
-
     [Header("Sprint")]
     public float tempoSprint = 3f;
     public float tempoRecargaSprint = 3f;
@@ -34,29 +32,13 @@ public class PlayerAvancedMovimento : MonoBehaviour
     public Camera cameraPrincipal;
     public float fovNormal = 90f;
     public float fovSprint = 120f;
+    public float fovNaAgua = 60f;
     public float velocidadeFov = 5f;
 
     private Rigidbody rb;
     private Vector3 movimento;
 
-
-
-    //void Start()
-    //{
-    //        pulosMaximos = 1;
-    //        pulosRestantes = pulosMaximos;
-    //        rb = GetComponent<Rigidbody>();
-
-
-    //    rb = GetComponent<Rigidbody>();
-    //    velocidadeAtual = velocidadeNormal;
-
-    //    if (cameraPrincipal == null)
-    //    {
-    //        cameraPrincipal = Camera.main;
-    //    }
-    //}
-
+    public bool emAgua = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -70,79 +52,15 @@ public class PlayerAvancedMovimento : MonoBehaviour
         pulosMaximos = 1;
         pulosRestantes = pulosMaximos;
     }
-
-
-    //void Update()
-    //{
-    //    // Ve se está tocado no chao
-    //    isGrounded = Physics.CheckSphere(checarChao.position, raioDoChao, camadaDoChao);
-
-
-
-
-    //    //if (Input.GetButtonDown("Jump") && isGrounded)
-    //    //{
-    //    //    rb.AddForce(Vector3.up * forcaDoPulo, ForceMode.Impulse);
-    //    //}
-
-    //    if (isGrounded)
-    //    {
-    //        pulosRestantes = pulosMaximos;
-    //    }
-
-    //    if (Input.GetButtonDown("Jump") && pulosRestantes > 0)
-    //    {
-    //        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-    //        rb.AddForce(Vector3.up * forcaDoPulo, ForceMode.Impulse);
-    //        pulosRestantes--;
-    //    }
-
-    //    // Input de movimento
-    //    float moveX = Input.GetAxis("Horizontal");
-    //    float moveZ = Input.GetAxis("Vertical");
-    //    movimento = new Vector3(moveX, 0, moveZ).normalized;
-
-    //    if (sprintDesbloqueado)
-    //    {
-    //        // Quando Shift for pressionado e o jogador pode correr
-    //        if (Input.GetKey(KeyCode.LeftShift) && podeCorrer && movimento.magnitude > 0.1f)
-    //        {
-    //            estaCorrendo = true;
-    //            velocidadeAtual = velocidadeSprint;
-    //            timerSprint += Time.deltaTime;
-
-    //            if (timerSprint >= tempoSprint)
-    //            {
-    //                podeCorrer = false;
-    //                timerRecarga = 0f;
-    //                estaCorrendo = false;
-    //            }
-    //        }
-    //        else
-    //        {
-    //            estaCorrendo = false;
-    //            velocidadeAtual = velocidadeNormal;
-
-    //            if (!podeCorrer)
-    //            {
-    //                timerRecarga += Time.deltaTime;
-    //                if (timerRecarga >= tempoRecargaSprint)
-    //                {
-    //                    podeCorrer = true;
-    //                    timerSprint = 0f;
-    //                }
-    //            }
-    //        }
-
-    //        // FOV 90 > 120
-    //        float fovAlvo = estaCorrendo ? fovSprint : fovNormal;
-    //        cameraPrincipal.fieldOfView = Mathf.Lerp(cameraPrincipal.fieldOfView, fovAlvo, Time.deltaTime * velocidadeFov);
-    //    }
-
-    //}
-
     void Update()
     {
+        //Debug.Log("Velocidade Atual: " + velocidadeAtual + " | Em Água: " + emAgua);
+        //Debug.Log("Velocidade física do corpo: " + rb.linearVelocity.magnitude);
+
+
+        velocidadeAtual = emAgua ? velocidadeNormal / 5f : velocidadeNormal;
+
+
         isGrounded = Physics.CheckSphere(checarChao.position, raioDoChao, camadaDoChao);
 
         if (isGrounded && !estavaNoChaoAntes)
@@ -154,7 +72,7 @@ public class PlayerAvancedMovimento : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && pulosRestantes > 0)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // zera Y pra pulo limpo
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // zera Y para pulo limpo
             rb.AddForce(Vector3.up * forcaDoPulo, ForceMode.Impulse);
             pulosRestantes--;
         }
@@ -193,11 +111,20 @@ public class PlayerAvancedMovimento : MonoBehaviour
                     }
                 }
             }
-
-            // FOV 90 -> 120
-            float fovAlvo = estaCorrendo ? fovSprint : fovNormal;
-            cameraPrincipal.fieldOfView = Mathf.Lerp(cameraPrincipal.fieldOfView, fovAlvo, Time.deltaTime * velocidadeFov);
         }
+        float fovAlvo = fovNormal;
+
+        if (emAgua)
+        {
+            fovAlvo = fovNaAgua;
+        }
+        else if (sprintDesbloqueado && estaCorrendo)
+        {
+            fovAlvo = fovSprint;
+        }
+
+        cameraPrincipal.fieldOfView = Mathf.Lerp(cameraPrincipal.fieldOfView, fovAlvo, Time.deltaTime * velocidadeFov);
+
     }
 
 

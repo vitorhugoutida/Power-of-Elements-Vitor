@@ -12,13 +12,12 @@ public class PlayerSimpleMovement : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // Isso trava o cursor no meio da tela
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        // Movimento do mouse (câmera)
         float mouseX = Input.GetAxis("Mouse X") * 400 * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * 400 * Time.deltaTime;
 
@@ -28,7 +27,6 @@ public class PlayerSimpleMovement : MonoBehaviour
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         playerBody.Rotate(Vector3.up * mouseX);
 
-        // Movimento do jogador
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
